@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script>
+    class Node {
+      constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+      }
+    }
+
+    class BST {
+      constructor() {
+        this._root = null;
+      }
+
+      insert(value) {
+        let node = new Node(value);
+
+        // If the root is empty, insert value to root
+        if (!this._root) {
+          this._root = node;
+        } else {
+          this._adValue(this._root, node);
+        }
+      }
+
+      _adValue(root, node) {
+        // if the root is not empty
+        if (node.value < root.value) {
+          // if the value is smaller than the root, insert value to left of root
+          if (root.left) {
+            return this._adValue(root.left, node);
+          }
+
+          root.left = node;
+        } else {
+          // if the value is greater than the root, insert value to right of root
+
+          if (root.right) {
+            return this._adValue(root.right, node);
+          }
+
+          root.right = node;
+        }
+      }
+
+      search(value) {
+        // 1: If root is empty, return false
+        if (!this._root) {
+          return false;
+        }
+
+        // 2: execute the search algorithm
+        return this._checkIfIsequal(this._root, value);
+      }
+
+      _checkIfIsequal(root, value) {
+        // 3: If current root is empty, it means no value was found, return false
+        if (!root) {
+          return false;
+        }
+
+        // 4: Found the value, return true
+        if (root.value === value) {
+          return true;
+        }
+
+        if (value < root.value) {
+          //5: If value is smaller than current root's value, repeat step 2 giving the current root's left arm
+          return this._checkIfIsequal(root.left, value);
+        } else {
+          //5: If value is greater than current root's value, repeat step 2 giving the current root's right arm
+          return this._checkIfIsequal(root.right, value);
+        }
+      }
+
+      remove(value) {
+        // 1: If root is empty, return false
+        if (!this._root) {
+          return false;
+        }
+
+        // 2: execute the search algorithm
+        // return this._searchAndRemove(this._root, value);
+        let currentRoot = this._root;
+        let prevRoot = null;
+        let nodeSide = null;
+
+        while (currentRoot) {
+          if (currentRoot.value === value) {
+            if (
+              currentRoot.left == null &&
+              currentRoot.right == null &&
+              nodeSide
+            ) {
+              prevRoot[nodeSide] = null;
+              return true;
+            } else if (
+              (currentRoot.left === null || currentRoot.right === null) &&
+              nodeSide
+            ) {
+              /**
+               * TODO: Implement case 2:
+               *  * If the node has either a left or right child but not both, move that node to current one's position
+               */
+            } else if (currentRoot.left && currentRoot.right && nodeSide) {
+              /**
+               * TODO: Implement case 3...
+               */
+            }
+          }
+
+          prevRoot = currentRoot;
+          if (value > currentRoot.value) {
+            currentRoot = currentRoot.right;
+            nodeSide = "right";
+          } else {
+            currentRoot = currentRoot.left;
+            nodeSide = "left";
+          }
+        }
+      }
+
+      // _searchAndRemove(root, value) {
+      //   // 3: If current root is empty, it means no value was found, return false
+      //   if (!root) {
+      //     return false;
+      //   }
+
+      //   // 4: found the value, remove it, and return true
+      //   if (value === root.value) {
+      //   }
+
+      //   if (value < root.value) {
+      //     //5: If value is smaller than current root's value, repeat step 2 giving the current root's left arm
+      //     return this._searchAndRemove(root.left, value);
+      //   } else {
+      //     //5: If value is greater than current root's value, repeat step 2 giving the current root's right arm
+      //     return this._searchAndRemove(root.right, value);
+      //   }
+      // }
+
+      getTree() {
+        return this._root;
+      }
+    }
+
+    const tree = new BST();
+    tree.insert(20);
+    tree.insert(30);
+    tree.insert(31);
+    tree.insert(10);
+    tree.insert(8);
+    tree.insert(9);
+    tree.insert(40);
+    // console.log(tree.search(10));
+    console.log(tree.remove(9));
+    console.log(tree.remove(40));
+
+    console.log(tree.getTree());
+  </script>
+</html>
